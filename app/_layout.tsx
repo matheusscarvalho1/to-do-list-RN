@@ -1,29 +1,32 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Alert, Button, Image, ScrollView, Text, TextInput } from "react-native";
+import reactLogo from "../assets/images/react-logo.png";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
+  const log = (message: string) => {
+    console.log(message);
+  }
+
+  const alert = (message: string) => {
+    Alert.alert(message);
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+  <>
+    <ScrollView>
+      <Image source={reactLogo}/>
+      <Text>Minhas Tarefass</Text>
+      <TextInput />
+      <Button
+        title="Console Log"
+        onPress={() => log("Este é um Log de teste")}
+      />
+      <Button
+        title="Alert"
+        onPress={() => alert("Este é um Alert de teste")}
+      />
+    </ScrollView>
+  </>
+  )
 }
