@@ -27,13 +27,16 @@ export const style = StyleSheet.create({
         justifyContent: "center",
         display: "flex",
         flexDirection: "row",
-        gap: 20,
-        paddingVertical: 20,
+        gap: 5,
+        paddingTop: 40,
+        paddingVertical: 10,
+        
     },
 
     mainContainer: {
         boxSizing: "border-box",
         backgroundColor: colors.background,
+        height: "100%",
     },
 
     input: {
@@ -71,7 +74,6 @@ export const style = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
     }
 
 })
