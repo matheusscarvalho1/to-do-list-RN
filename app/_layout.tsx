@@ -4,6 +4,7 @@ import { colors } from "@/constants/color";
 import { style } from "@/styles/stylesheet";
 import { useState } from "react";
 import { Alert, FlatList, Image, Pressable, Text, TextInput, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 	const initialTasks = [
 		{ id: 1, completed: true, text: "Fazer café" },
@@ -32,35 +33,43 @@ export default function RootLayout() {
 
   return (
   <>
-    <View style={style.mainContainer}>
-      <View style={style.headerContainer}>
-        <Image source={checkLogo} style={style.image1}/>
-        <Text style={style.title}>Minhas Tarefas</Text>
-      </View>
-      <View style={style.taskWrapper}>
-        <TextInput 
-          placeholder="Digite sua tarefa" 
-          style={style.input}
-          value={text}
-          onChangeText={setText} 
+    <GestureHandlerRootView>  
+        <View style={style.mainContainer}>
+          <View style={style.headerContainer}>
+            <Image source={checkLogo} style={style.image1}/>
+            <Text style={style.title}>Minhas Tarefas</Text>
+          </View>
+          <View style={style.taskWrapper}>
+            <TextInput 
+              placeholder="Digite sua tarefa" 
+              style={style.input}
+              value={text}
+              onChangeText={setText} 
+            />
+          
+            <Pressable
+            onPress={() => addTask()}
+            style={({pressed}) => [
+              style.button,
+              {backgroundColor: pressed ? colors.secondary : colors.primary}
+            ]}
+            >
+              <Text style={style.buttonText}>+</Text>
+          </Pressable>
+          </View>
+          <FlatList
+            data={tasks}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({item}) => (
+            <Task 
+              text={item.text} 
+              initialCompleted={item.completed}
+              deleteTasks={() => setTasks(tasks.filter(task => task.id !== item.id))} 
+            />
+          )}
         />
-      
-        <Pressable
-        onPress={() => addTask()}
-        style={({pressed}) => [
-          style.button,
-          {backgroundColor: pressed ? colors.secondary : colors.primary}
-        ]}
-        >
-          <Text style={style.buttonText}>+</Text>
-      </Pressable>
       </View>
-      <FlatList
-        data={tasks}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({item}) => <Task text={item.text} initialCompleted={item.completed}/>}
-      />
-    </View>
+    </GestureHandlerRootView>
   </>
   )
 }

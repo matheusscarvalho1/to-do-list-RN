@@ -67,13 +67,18 @@ export const style = StyleSheet.create({
     },
 
     taskWrapper: {
-        padding: 10,
-        marginVertical: 5,
-        borderRadius: 10,
-        gap: 10,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+        marginVertical: 5,
+        borderRadius: 10,
+        gap: 10,
+        padding: 10,
+        elevation: 3, // Android
+        shadowColor: "#000000", // iOS
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 2 },
+        backgroundColor: "#FFFFFF"
     }
 
 })
