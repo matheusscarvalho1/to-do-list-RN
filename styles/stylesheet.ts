@@ -28,7 +28,6 @@ export const style = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         gap: 5,
-        paddingTop: 40,
         paddingVertical: 10,
         
     },

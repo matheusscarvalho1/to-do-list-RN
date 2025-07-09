@@ -2,20 +2,53 @@ import checkLogo from "@/assets/images/check.png";
 import Task from "@/components/Task";
 import { colors } from "@/constants/color";
 import { style } from "@/styles/stylesheet";
-import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import { Alert, FlatList, Image, Pressable, Text, TextInput, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-	const initialTasks = [
-		{ id: 1, completed: true, text: "Fazer café" },
-		{ id: 2, completed: false, text: "Estudar React Native" },
-		{ id: 3, completed: false, text: "Academia" }
-	]
+	// const initialTasks = [
+	// 	{ id: 1, completed: true, text: "Fazer café" },
+	// 	{ id: 2, completed: false, text: "Estudar React Native" },
+	// 	{ id: 3, completed: false, text: "Academia" }
+	// ]
+  interface Task {
+  id: number;
+  completed: boolean;
+  text: string;
+}
 
 export default function RootLayout() {
 
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [text, setText] = useState("");
+
+  useEffect(() => {
+    const getValueAsyncStorage = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('tasks');
+        if (jsonValue !== null) {
+          setTasks(JSON.parse(jsonValue));
+        } 
+      } catch (error) {
+        console.error("Error retrieving tasks:", error);
+      }
+    }
+    getValueAsyncStorage();
+  }, [])
+
+  useEffect(() => {
+    const setValueAsyncStorage = async () => {
+      try {
+        const jsonValue = JSON.stringify(tasks);
+        await AsyncStorage.setItem('tasks', jsonValue);
+      } catch (error) {
+        console.error("Error saving tasks:", error);
+      }
+    }
+    setValueAsyncStorage();
+  }, [tasks])
 
   const onPressButton = (message: string) => {
     Alert.alert(message);
@@ -34,7 +67,7 @@ export default function RootLayout() {
   return (
   <>
     <GestureHandlerRootView>  
-        <View style={style.mainContainer}>
+        <SafeAreaView style={style.mainContainer}>
           <View style={style.headerContainer}>
             <Image source={checkLogo} style={style.image1}/>
             <Text style={style.title}>Minhas Tarefas</Text>
@@ -68,7 +101,7 @@ export default function RootLayout() {
             />
           )}
         />
-      </View>
+      </SafeAreaView>
     </GestureHandlerRootView>
   </>
   )
